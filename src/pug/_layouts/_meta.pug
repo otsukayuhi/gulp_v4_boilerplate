@@ -1,0 +1,35 @@
+-
+  const CONF_PAGE = CONF[PAGE];
+  const P_TYPE = (PAGE === 'top')? 'website' : 'article';
+
+meta(charset="UTF-8")
+meta(http-equiv="X-UA-Compatible", content="IE=edge")
+title #{CONF_PAGE.title}
+
+meta(name="description", content=CONF_PAGE.description)
+meta(name="viewport", content="width=device-width, initial-scale=1")
+meta(name="format-detection", content="telephone=no")
+
+// OG
+meta(property="og:title", content=CONF_PAGE.title)
+meta(property="og:description", content=CONF_PAGE.description)
+meta(property="og:type", content=P_TYPE)
+meta(property="og:image", content=`${CONF_ABSOLUTE_PATH}og.png?update=${CONF_UPDATE_OG}`)
+//- relativePath には、ディレクトリパスが入っている
+meta(property="og:url", content=CONF_ABSOLUTE_PATH + relativePath)
+
+// twitter card
+meta(name="twitter:card", content="summary_large_image")
+meta(name="twitter:image", content=`${CONF_ABSOLUTE_PATH}twitter_card.png?update=${CONF_UPDATE_OG}`)
+
+// icon
+link(rel="shortcut icon", href="/favicon.ico")
+link(rel='apple-touch-icon', href='/apple-touch-icon.png')
+link(rel="canonical", href=CONF_ABSOLUTE_PATH + relativePath)
+
+block css
+  link(href=`/css/main.css`, rel="stylesheet")
+
+script.
+  document.createElement( "picture" );
+script(src='/js/vendor/picturefill.min.js', async)

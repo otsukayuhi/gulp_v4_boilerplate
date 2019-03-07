@@ -1,0 +1,22 @@
+//- _layouts/_default.pugを継承
+extend /_layouts/_default
+append variables
+  -
+    // page settings
+    const PAGE = 'foo'; // data/conf.pug のページを指定
+    const P_NAME = 'foo'; // body.page-{P_NAME} こんな感じにもなる
+
+//- /_layout/_meta.pug の block css に追記
+append css
+  link(href=`/css/${P_NAME}.css`, rel="stylesheet")
+
+//- /_layout/_default.pug の block content を上書き
+block content
+  main.l-main
+    p.hoge コンテンツ
+
+  <!--#include virtual="/_ssi/sample.inc"-->
+
+//- /_layout/_script.pug の block script に追記
+append script
+  script(src=`/js/${P_NAME}.js`, defer)

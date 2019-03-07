@@ -1,0 +1,71 @@
+extend /_layouts/_default
+append variables
+  -
+    // page settings
+    const PAGE = 'top'; // /_data/_conf.pug のページを指定
+    const P_NAME = 'top'; // body.page-{P_NAME} こんな感じにもなる
+    const P_IMG_PATH = '/img/';
+
+//- /_layout/_meta.pug の block css に追記
+//- テンプレートリテラルも使える
+append css
+  link(href=`/css/${P_NAME}.css`, rel="stylesheet")
+
+//- /_layout/_default.pug の block content を上書き
+block content
+  //- .className #id
+  main.l-main#main
+    //- 基本はネストで入れ子
+    p.hoge コンテンツ
+      br
+      | 改行改行
+
+    //- picture要素用mixin（_config.pugに設定あり）
+    +myPicture(P_IMG_PATH, '_dummy', 'png')
+
+    //- picture要素用mixin（_config.pugに設定なし）
+    +picture(
+      P_IMG_PATH,
+      '_dummy',
+      'png',
+      'min',
+      [768],
+      ['_sm','_lg']
+      )
+
+    dl(style='margin: 10px 0;')
+      //- tagName: <- これでネストもできる
+      dt: strong 電話番号（リンク）をスマートフォン端末以外では無効
+      dd 例
+        a(href='tel:000000000') 000-000-000
+
+    ul.hoge_list
+      -
+        const LIST = [
+          {text: 'ひとつめのりんく', link: '/001/'},
+          {text: 'ふたつめのりんく', link: '/002/'},
+          {text: 'みっつめのりんく', link: '/003/'},
+          {text: 'よっつめのりんく', link: '/004/'},
+          {text: 'いつつめのりんく', link: '/005/'}
+        ];
+
+      //- ループ
+      each item, i in LIST
+        //- 属性は改行してもよし
+        //- #{foo}で文字列を出力
+        //- !{foo}だと、HTMLタグも使える
+        //- 例: const foo = 'テキスト<br>テキスト';
+        li.hoge_item: a(
+          class=`hoge_item-0${i+1}`,
+          href=`${item.link}index.html`,
+          terget="_blank"
+          ) #{item.text}
+
+    //- ページを分割してもよし
+    include ./_pug_top_component
+
+  <!--#include virtual="/_ssi/sample.inc"-->
+
+//- /_layout/_script.pug の block script に追記
+append script
+  script(src=`/js/${P_NAME}.js`, defer)

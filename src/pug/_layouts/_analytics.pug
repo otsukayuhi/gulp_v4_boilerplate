@@ -1,0 +1,15 @@
+-
+  // gulp側の設定で出し分け
+  const GA_TRACKING_ID = (mode === 'development')? 'UA-XXXXXXXX-X' : 'UA-12345678-1';
+
+//- .（ドット）を使うと、HTMLが直接書ける
+.
+  <!-- Global Site Tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=#{GA_TRACKING_ID}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '#{GA_TRACKING_ID}');
+  </script>

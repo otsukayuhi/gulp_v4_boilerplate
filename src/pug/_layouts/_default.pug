@@ -1,0 +1,19 @@
+//- global settings
+include /_global/_global
+block variables
+
+doctype html
+html(lang="ja")
+  head
+    include ./_analytics
+    include ./_meta
+
+  body#body(class=`page-${P_NAME}`)
+    .l-container#l-container
+      include /_components/_header
+
+      //- page/ のPugファイルで上書き
+      block content
+
+      include /_components/_footer
+    include ./_script

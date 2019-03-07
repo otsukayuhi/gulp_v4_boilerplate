@@ -1,0 +1,80 @@
+//-
+//- mixin
+//-
+
+include ./_config
+
+//- myPicture _conf.pugの設定を反映
+mixin myPicture(path, name, extension, alt)
+  picture
+    each val, i in CONF_MEDIA_WIDTH
+      -
+        const MEDIA = (CONF_MEDIA === 'min')? CONF_MEDIA_WIDTH.length-(i+1) : i;
+        const PRE_EXT_SRCSET = (CONF_MEDIA === 'min')? CONF_PER_EXTENSIONS.length-(i+1) : i;
+      source(
+      media=`(${CONF_MEDIA}-width: ${CONF_MEDIA_WIDTH[MEDIA]}px)`,
+      srcset=`${path}${name}${CONF_PER_EXTENSIONS[PRE_EXT_SRCSET]}.${extension}`
+      )
+    - const PRE_EXT_IMG = (CONF_MEDIA === 'min')? 0 : CONF_PER_EXTENSIONS.length-1;
+    img(src=`${path}${name}${CONF_PER_EXTENSIONS[PRE_EXT_IMG]}.${extension}`, alt=alt)
+
+//- 使用例
+//- +myPicture('/img/xxx/', 'bar', 'png', 'alt text')
+
+//- <picture>
+//-   <source media="(min-width: 980px)" srcset="/img/xxx/foo_xl.jpg" />
+//-   <source media="(min-width: 768px)" srcset="/img/xxx/foo_lg.jpg" />
+//-   <source media="(min-width: 414px)" srcset="/img/xxx/foo_md.jpg" />
+//-   <img src="/img/xxx/foo_sm.jpg" alt="alt text" />
+//- </picture>
+
+
+//- picture
+mixin picture(path, name, extension, media, width, preExtensions, alt)
+  picture
+    each val, i in width
+      -
+        const MEDIA = (media === 'min')? width.length-(i+1) : i;
+        const PRE_EXT_SRCSET = (media === 'min')? preExtensions.length-(i+1) : i;
+      source(
+      media=`(${media}-width: ${width[MEDIA]}px)`,
+      srcset=`${path}${name}${preExtensions[PRE_EXT_SRCSET]}.${extension}`
+      )
+    - const PRE_EXT_IMG = (media === 'min')? 0 : preExtensions.length-1;
+    img(src=`${path}${name}${preExtensions[PRE_EXT_IMG]}.${extension}`, alt=alt)
+
+//- 使用例（min-width）
+//- +picture(
+//-   '/img/xxx/',
+//-   'foo',
+//-   'jpg',
+//-   'min',
+//-   [414, 768, 980],
+//-   ['_sm', '_md', '_lg', '_xl'],
+//-   'alt text'
+//-   )
+
+//- <picture>
+//-   <source media="(min-width: 980px)" srcset="/img/xxx/foo_xl.jpg" />
+//-   <source media="(min-width: 768px)" srcset="/img/xxx/foo_lg.jpg" />
+//-   <source media="(min-width: 414px)" srcset="/img/xxx/foo_md.jpg" />
+//-   <img src="/img/xxx/foo_sm.jpg" alt="alt text" />
+//- </picture>
+
+//- 使用例（max-width）
+//- +picture(
+//-   '/img/xxx/',
+//-   'bar',
+//-   'png',
+//-   'max',
+//-   [414, 768, 980],
+//-   ['_sm', '_md', '_lg', '_xl'],
+//-   'alt text'
+//-   )
+
+//- <picture>
+//-   <source media="(max-width: 414px)" srcset="/img/xxx/bar_sm.png" />
+//-   <source media="(max-width: 768px)" srcset="/img/xxx/bar_md.png" />
+//-   <source media="(max-width: 980px)" srcset="/img/xxx/bar_lg.png" />
+//-   <img src="/img/xxx/bar_xl.png" alt="alt text" />
+//- </picture>
